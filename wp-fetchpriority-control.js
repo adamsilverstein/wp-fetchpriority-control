@@ -18,18 +18,19 @@ const allowedBlocks = [ 'core/image' ];
  *
  * @return {Object} settings Modified settings.
  */
-function addAttributes( settings ) {
+function addAttributes( settings, extraAttributes ) {
+
 	//check if object exists for old Gutenberg version compatibility
 	if( typeof settings.attributes !== 'undefined' && allowedBlocks.includes( settings.name ) ){
 		settings.attributes = Object.assign( settings.attributes, {
-			fetchpriorityAttribute:{
-				enum: [ 'Default', 'High', 'Low' ],
+			fetchpriority: {
 				type: 'string',
 			}
 		} );
 	}
 	return settings;
 }
+addFilter( 'blocks.registerBlockType', 'fetchpriorityControl/customAttribute', addAttributes );
 
 /**
  * Add the control in the Advanced Block Panel.
@@ -47,7 +48,7 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 			isSelected,
 		} = props;
 		const {
-			fetchpriorityAttribute,
+			fetchpriority,
 		} = attributes;
 
 		return (
@@ -57,13 +58,15 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<InspectorAdvancedControls>
 						<SelectControl
 							label={ __( 'Fetchpriority' ) }
-							value={ fetchpriorityAttribute }
+							value={ fetchpriority }
 							options={ [
-								{ label: __( 'Default' ), value: false },
+								{ label: __( 'Default' ), value: '' },
 								{ label: __( 'High' ), value: 'high' },
 								{ label: __( 'Low' ), value: 'low' },
 							] }
-							onChange={ ( value ) => setAttributes( {  fetchpriorityAttribute: value } ) }
+							onChange={ ( value ) => {
+								setAttributes( { fetchpriority: value } )
+							} }
 							help={ __( 'Set the fetchpriority attribute' ) }
 						/>
 					</InspectorAdvancedControls>
@@ -73,5 +76,4 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 	};
 }, 'withAdvancedControls');
 
-addFilter( 'blocks.registerBlockType', 'fetchpriorityControl/customAttribute', addAttributes );
 addFilter( 'editor.BlockEdit', 'fetchpriorityControl/customAttributeControls', withAdvancedControls );

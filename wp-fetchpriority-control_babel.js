@@ -30,18 +30,18 @@ const allowedBlocks = ['core/image'];
  *
  * @return {Object} settings Modified settings.
  */
-function addAttributes(settings) {
+function addAttributes(settings, extraAttributes) {
   //check if object exists for old Gutenberg version compatibility
   if (typeof settings.attributes !== 'undefined' && allowedBlocks.includes(settings.name)) {
     settings.attributes = Object.assign(settings.attributes, {
-      fetchpriorityAttribute: {
-        enum: ['Default', 'High', 'Low'],
+      fetchpriority: {
         type: 'string'
       }
     });
   }
   return settings;
 }
+addFilter('blocks.registerBlockType', 'fetchpriorityControl/customAttribute', addAttributes);
 
 /**
  * Add the control in the Advanced Block Panel.
@@ -59,14 +59,14 @@ const withAdvancedControls = createHigherOrderComponent(BlockEdit => {
       isSelected
     } = props;
     const {
-      fetchpriorityAttribute
+      fetchpriority
     } = attributes;
     return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockEdit, props), isSelected && allowedBlocks.includes(name) && /*#__PURE__*/React.createElement(InspectorAdvancedControls, null, /*#__PURE__*/React.createElement(SelectControl, {
       label: __('Fetchpriority'),
-      value: fetchpriorityAttribute,
+      value: fetchpriority,
       options: [{
         label: __('Default'),
-        value: false
+        value: ''
       }, {
         label: __('High'),
         value: 'high'
@@ -74,13 +74,14 @@ const withAdvancedControls = createHigherOrderComponent(BlockEdit => {
         label: __('Low'),
         value: 'low'
       }],
-      onChange: value => setAttributes({
-        fetchpriorityAttribute: value
-      }),
+      onChange: value => {
+        setAttributes({
+          fetchpriority: value
+        });
+      },
       help: __('Set the fetchpriority attribute')
     })));
   };
 }, 'withAdvancedControls');
-addFilter('blocks.registerBlockType', 'fetchpriorityControl/customAttribute', addAttributes);
 addFilter('editor.BlockEdit', 'fetchpriorityControl/customAttributeControls', withAdvancedControls);
 
