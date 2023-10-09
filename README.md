@@ -11,7 +11,7 @@ Similarly , if you have an image you want to make sure isn't prioritized, you ca
 
 The new Fetchpriority selector under Advanced when an image block is selected:
 
-![Monosnap Edit Post “test” ‹ wpdev — WordPress 2023-10-09 11-15-26](https://github.com/adamsilverstein/wp-fetchpriority-control/assets/2676022/31795280-82d3-430c-a348-23818c1add28)
+![image](https://github.com/adamsilverstein/wp-fetchpriority-control/assets/2676022/f33d5f5f-875c-4310-9098-2ffdfc3772e0)
 
 Fetchpriority options:
 
