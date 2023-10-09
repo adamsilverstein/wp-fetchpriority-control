@@ -17,3 +17,5 @@ Fetchpriority options:
 
 ![Monosnap Monosnap 2023-10-09 11-16-09](https://github.com/adamsilverstein/wp-fetchpriority-control/assets/2676022/8c97186d-7355-44fa-9ae9-c64fde9a6c9c)
 
+## Credits
+Thanks to Sabrina Zeidan who created this control for disabling lazy loading (https://github.com/sabrina-zeidan/sz-disable-lazyload/) which was the starting point / inspiration for this plugin.
