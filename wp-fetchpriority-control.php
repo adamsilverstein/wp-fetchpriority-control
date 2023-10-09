@@ -36,18 +36,19 @@ function wp_fp_ctl_assign_class( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if( 'core/image' !== $block['blockName']) {
+	if ( 'core/image' !== $block['blockName']) {
+		return $block_content;
+	}
+
+	if ( empty( $block['attrs']['fetchpriority'] ) ) {
 		return $block_content;
 	}
 
 	// Add the fetchpriority attribute when set.
-	if( ! empty( $block['attrs']['fetchpriority'] ) ) {
-		$processor = new WP_HTML_Tag_Processor( $block_content );
-		while( $processor->next_tag( 'img' ) ) {
-			$processor->set_attribute( 'fetchpriority', $block['attrs']['fetchpriority'] );
-		}
-		$block_content = $processor->get_updated_html();
+	$processor = new WP_HTML_Tag_Processor( $block_content );
+	while( $processor->next_tag( 'img' ) ) {
+		$processor->set_attribute( 'fetchpriority', $block['attrs']['fetchpriority'] );
 	}
-	return $block_content;
+	return $processor->get_updated_html();
 }
 add_filter( 'render_block', 'wp_fp_ctl_assign_class', 10, 3);
